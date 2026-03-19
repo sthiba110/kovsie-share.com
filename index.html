@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KovsieShare Pro - UFS Study Resource Exchange | Developed by Matshika Thokozani</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ufs-maroon: #5A143D;
+            --ufs-gold: #FFB81C;
+            --dark: #1a1a2e;
+            --accent: #e94560;
+            --success: #00b894;
+            --error: #ff4757;
+            --premium: #fdcb6e;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Developer Credit Bar */
+        .dev-credit {
+            background: linear-gradient(90deg, var(--ufs-maroon), #7a1f4f);
+            color: white;
+            text-align: center;
+            padding: 8px;
+            font-size: 13px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1001;
+            border-bottom: 2px solid var(--ufs-gold);
+        }
+
+        .dev-credit a {
+            color: var(--ufs-gold);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--ufs-maroon) 0%, #7a1f4f 100%);
+            color: white;
+            padding: 1rem 5%;
+            box-shadow: 0 4px 20px rgba(90, 20, 61, 0.3);
+            position: fixed;
+            width: 100%;
+            top: 35px;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--ufs-gold);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--ufs-gold);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ufs-maroon);
+            font-size: 24px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--ufs-gold);
+        }
+
+        .credits-display {
+            background: rgba(255,255,255,0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .premium-badge {
+            background: linear-gradient(135deg, var(--ufs-gold), #ff8f00);
+            color: var(--ufs-maroon);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: none;
+        }
+
+        .premium-badge.active {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-top: 130px;
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Auth Section */
+        .auth-section {
+            display: none;
+            min-height: calc(100vh - 150px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-section.active {
+            display: flex;
+        }
+
+        .auth-box {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .auth-box h2 {
+            color: var(--ufs-maroon);
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .auth-subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .ufs-badge {
+            background: linear-gradient(135deg, var(--ufs-maroon), var(--ufs-gold));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--ufs-maroon);
+        }
+
+        .form-group input.error {
+            border-color: var(--error);
+            background: rgba(255, 71, 87, 0.05);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--ufs-maroon) 0%, #7a1f4f 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(90, 20, 61, 0.3);
+        }
+
+        .auth-switch {
+            margin-top: 1.5rem;
+            color: #666;
+        }
+
+        .auth-switch a {
+            color: var(--ufs-maroon);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        /* Packages Section */
+        .packages-hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .packages-hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--ufs-gold), #ff8f00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .package-card {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .package-card:hover {
+            border-color: var(--ufs-gold);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .package-card.current {
+            border-color: var(--success);
+            background: rgba(0, 184, 148, 0.1);
+        }
+
+        .package-card.current::before {
+            content: "✓ CURRENT PLAN";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--success);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .package-card.featured {
+            border-color: var(--ufs-gold);
+            background: rgba(255, 184, 28, 0.15);
+            transform: scale(1.05);
+        }
+
+        .package-card.featured::before {
+            content: "★ MOST POPULAR";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--ufs-gold);
+            color: var(--ufs-maroon);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .package-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .package-price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--ufs-gold);
+            margin: 1rem 0;
+        }
+
+        .package-price span {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .package-features {
+            list-style: none;
+            text-align: left;
+            margin: 1.5rem 0;
+        }
+
+        .package-features li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .package-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--ufs-gold);
+            font-weight: bold;
+        }
+
+        .btn-select-package {
+            width: 100%;
+            padding: 1rem;
+            background: var(--ufs-gold);
+            color: var(--ufs-maroon);
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-select-package:hover {
+            background: #ff8f00;
+            transform: scale(1.05);
+        }
+
+        .btn-current {
+            background: var(--success);
+            color: white;
+            cursor: default;
+        }
+
+        .btn-current:hover {
+            transform: none;
+        }
+
+        /* Payment Modal */
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .payment-modal.active {
+            display: flex;
+        }
+
+        .payment-container {
+            background: white;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .payment-header {
+            background: linear-gradient(135deg, var(--ufs-maroon), #7a1f4f);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+        }
+
+        .payment-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .secure-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .payment-body {
+            padding: 2rem;
+        }
+
+        .selected-package-info {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-method {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover, .payment-method.active {
+            border-color: var(--ufs-maroon);
+            background: rgba(90, 20, 61, 0.05);
+        }
+
+        .card-preview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            position: relative;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-chip {
+            width: 50px;
+            height: 35px;
+            background: linear-gradient(135deg, #f0c27b, #4b1248);
+            border-radius: 8px;
+        }
+
+        .card-number-display {
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            font-family: monospace;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .card-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn-pay-now {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--ufs-maroon), #7a1f4f);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-pay-now:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(90, 20, 61, 0.3);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* Upload Zone */
+        .upload-zone {
+            border: 3px dashed var(--ufs-maroon);
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            background: rgba(90, 20, 61, 0.02);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-zone:hover {
+            background: rgba(90, 20, 61, 0.05);
+        }
+
+        /* Quiz Section */
+        .quiz-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--ufs-maroon);
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--ufs-maroon);
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--ufs-maroon);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--success);
+            background: rgba(0, 184, 148, 0.1);
+        }
+
+        .quiz-option.wrong {
+            border-color: var(--error);
+            background: rgba(255, 71, 87, 0.1);
+        }
+
+        /* Stats */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #333;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 3000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--error); }
+        .toast.info { background: #2196f3; }
+
+        /* Processing Overlay */
+        .processing-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+        }
+
+        .processing-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: var(--ufs-gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--ufs-maroon);
+            color: white;
+            padding: 3rem 5%;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .developer-info {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .developer-info h3 {
+            color: var(--ufs-gold);
+            margin-bottom: 1rem;
+        }
+
+        .developer-info a {
+            color: var(--ufs-gold);
+            text-decoration: none;
+        }
+
+        .developer-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hyperlinks */
+        a {
+            color: var(--ufs-maroon);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        a:hover {
+            color: var(--ufs-gold);
+            text-decoration: underline;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .nav-links a:hover {
+            color: var(--ufs-gold);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+            .package-card.featured {
+                transform: none;
+            }
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Developer Credit Bar -->
+    <div class="dev-credit">
+        🚀 Developed by <strong>Matshika Thokozani</strong> | 
+        📧 <a href="mailto:matshikathokozani4@gmail.com">matshikathokozani4@gmail.com</a> | 
+        🎓 <a href="https://www.ufs.ac.za" target="_blank">UFS Student Resource Platform</a>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="showSection('home')">
+                <div class="logo-icon">📚</div>
+                <span>KovsieShare Pro</span>
+            </a>
+            <nav class="nav-links" id="navLinks" style="display: none;">
+                <a onclick="showSection('browse')">Browse</a>
+                <a onclick="showSection('upload')">Upload</a>
+                <a onclick="showSection('quizzes')">Quizzes</a>
+                <a onclick="showSection('packages')">Packages</a>
+                <div class="credits-display">
+                    <span>💎</span>
+                    <span id="creditCount">0 Credits</span>
+                </div>
+                <div class="premium-badge" id="premiumBadge">👑 PREMIUM</div>
+                <a onclick="logout()">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Auth Section -->
+        <section class="auth-section active" id="authSection">
+            <!-- Login Box -->
+            <div class="auth-box" id="loginBox">
+                <h2>Welcome Back</h2>
+                <p class="auth-subtitle">Sign in to access your account</p>
+                <span class="ufs-badge">🏛️ UFS Students Only</span>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="student@ufs.ac.za">
+                    <div class="error-message" id="loginEmailError">Please enter a valid UFS email</div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password">
+                    <div class="error-message" id="loginPasswordError">Incorrect password</div>
+                </div>
+                <button class="btn-primary" onclick="login()">Sign In</button>
+                
+                <p class="auth-switch">
+                    Don't have an account? <a onclick="showRegister()">Sign Up Now</a>
+                </p>
+                <p style="margin-top: 1rem; font-size: 0.85rem; color: #666;">
+                    <a href="#" onclick="showSection('packages')">View Packages</a> | 
+                    <a href="mailto:matshikathokozani4@gmail.com">Need Help?</a>
+                </p>
+            </div>
+
+            <!-- Register Box -->
+            <div class="auth-box" id="registerBox" style="display: none;">
+                <h2>Create Account</h2>
+                <p class="auth-subtitle">Join KovsieShare Pro today</p>
+                <span class="ufs-badge">🏛️ UFS Students Only</span>
+                
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="regName" placeholder="John Doe">
+                    <div class="error-message" id="regNameError">Please enter your full name</div>
+                </div>
+                <div class="form-group">
+                    <label>Student Email (@ufs.ac.za or @ufs4life.ac.za)</label>
+                    <input type="email" id="regEmail" placeholder="student@ufs.ac.za">
+                    <div class="error-message" id="regEmailError">Must be a valid UFS email address</div>
+                </div>
+                <div class="form-group">
+                    <label>Password (min 6 characters)</label>
+                    <input type="password" id="regPassword" placeholder="Create password">
+                    <div class="error-message" id="regPasswordError">Password must be at least 6 characters</div>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="regConfirmPassword" placeholder="Confirm password">
+                    <div class="error-message" id="regConfirmError">Passwords do not match</div>
+                </div>
+                <button class="btn-primary" onclick="register()">Create Account</button>
+                
+                <p class="auth-switch">
+                    Already have an account? <a onclick="showLogin()">Sign In</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Dashboard -->
+        <section class="dashboard" id="dashboard">
+            <!-- Packages Section (Default View) -->
+            <div class="content-section active" id="packagesSection">
+                <div class="packages-hero">
+                    <h2>👑 Choose Your Plan</h2>
+                    <p>Select the perfect package for your academic success</p>
+                    
+                    <div class="packages-grid">
+                        <!-- Free Package -->
+                        <div class="package-card" id="freePackage">
+                            <div class="package-name">📘 Free</div>
+                            <div class="package-price">R0<span>/month</span></div>
+                            <ul class="package-features">
+                                <li>3 Downloads per day</li>
+                                <li>Basic study materials</li>
+                                <li>Community access</li>
+                                <li>Email support</li>
+                                <li>Advertisements included</li>
+                            </ul>
+                            <button class="btn-select-package btn-current" id="freeBtn" onclick="selectFree()">Current Plan</button>
+                        </div>
+
+                        <!-- Basic Package -->
+                        <div class="package-card" id="basicPackage">
+                            <div class="package-name">📗 Basic</div>
+                            <div class="package-price">R29<span>/month</span></div>
+                            <ul class="package-features">
+                                <li>10 Downloads per day</li>
+                                <li>Basic quizzes (50+)</li>
+                                <li>Past papers (2 years)</li>
+                                <li>No advertisements</li>
+                                <li>Priority email support</li>
+                            </ul>
+                            <button class="btn-select-package" id="basicBtn" onclick="selectPackage('basic')">Upgrade to Basic</button>
+                        </div>
+
+                        <!-- Premium Package -->
+                        <div class="package-card featured" id="premiumPackage">
+                            <div class="package-name">📕 Premium</div>
+                            <div class="package-price">R49<span>/month</span></div>
+                            <ul class="package-features">
+                                <li>Unlimited downloads</li>
+                                <li>Advanced quizzes (200+)</li>
+                                <li>Past papers (5 years)</li>
+                                <li>AI Study Assistant</li>
+                                <li>Video tutorials</li>
+                                <li>Group study rooms</li>
+                                <li>24/7 Priority support</li>
+                            </ul>
+                            <button class="btn-select-package" id="premiumBtn" onclick="selectPackage('premium')">Upgrade to Premium</button>
+                        </div>
+
+                        <!-- Ultimate Package -->
+                        <div class="package-card" id="ultimatePackage">
+                            <div class="package-name">📙 Ultimate</div>
+                            <div class="package-price">R99<span>/month</span></div>
+                            <ul class="package-features">
+                                <li>Everything in Premium</li>
+                                <li>1-on-1 Tutor sessions (4hrs/month)</li>
+                                <li>Custom study plans</li>
+                                <li>Internship connections</li>
+                                <li>Career guidance</li>
+                                <li>Resume & CV builder</li>
+                                <li>Job placement assistance</li>
+                            </ul>
+                            <button class="btn-select-package" id="ultimateBtn" onclick="selectPackage('ultimate')">Go Ultimate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Browse Section -->
+            <div class="content-section" id="browseSection">
+                <h2 style="color: var(--ufs-maroon); margin-bottom: 1.5rem;">📚 Study Materials</h2>
+                <div id="materialsList"></div>
+            </div>
+
+            <!-- Upload Section -->
+            <div class="content-section" id="uploadSection">
+                <h2 style="color: var(--ufs-maroon); margin-bottom: 1.5rem;">📤 Upload Resources</h2>
+                <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📁</div>
+                    <h3>Drop files here or click to upload</h3>
+                    <p>Supported: PDF, DOCX, PPTX, XLSX (Max 50MB)</p>
+                    <input type="file" id="fileInput" hidden accept=".pdf,.docx,.pptx,.xlsx" onchange="handleUpload(event)">
+                </div>
+                <div id="uploadStatus"></div>
+            </div>
+
+            <!-- Quizzes Section -->
+            <div class="content-section" id="quizzesSection">
+                <h2 style="color: var(--ufs-maroon); margin-bottom: 1.5rem;">🎯 Practice Quizzes</h2>
+                <div id="quizContainer">
+                    <div class="quiz-card">
+                        <div class="quiz-question">COS1511: What is the correct syntax for a main function in C++?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, false)">A) void main()</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, true)">B) int main()</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false)">C) function main()</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false)">D) main[]</div>
+                        </div>
+                    </div>
+                    <div class="quiz-card">
+                        <div class="quiz-question">MAT1503: What is the derivative of x²?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, false)">A) x</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false)">B) x²</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, true)">C) 2x</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false)">D) 2</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-card" onclick="showSection('upload')">
+                    <div style="font-size: 2rem;">📤</div>
+                    <div>
+                        <h3 id="statUploads">0</h3>
+                        <p>Uploads</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="showSection('browse')">
+                    <div style="font-size: 2rem;">📥</div>
+                    <div>
+                        <h3 id="statDownloads">0</h3>
+                        <p>Downloads</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="showSection('quizzes')">
+                    <div style="font-size: 2rem;">🎯</div>
+                    <div>
+                        <h3 id="statQuizzes">0</h3>
+                        <p>Quizzes</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="showSection('packages')">
+                    <div style="font-size: 2rem;">💎</div>
+                    <div>
+                        <h3 id="statCredits">0</h3>
+                        <p>Credits</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="payment-container">
+            <div class="payment-header">
+                <h2>💳 Secure Payment</h2>
+                <p>Complete your subscription securely</p>
+                <div class="secure-badge">🔒 SSL Encrypted | 100% Secure</div>
+            </div>
+            
+            <div class="payment-body">
+                <div class="selected-package-info">
+                    <div>
+                        <strong id="selectedPackageName">Premium Package</strong>
+                        <p style="color: #666; font-size: 0.9rem;">Monthly subscription</p>
+                    </div>
+                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--ufs-maroon);">
+                        R<span id="selectedPackagePrice">49.00</span>
+                    </div>
+                </div>
+
+                <div class="payment-methods">
+                    <div class="payment-method active" onclick="selectPaymentMethod('card')">
+                        <div style="font-size: 2rem;">💳</div>
+                        <div>Credit Card</div>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('debit')">
+                        <div style="font-size: 2rem;">🏦</div>
+                        <div>Debit Card</div>
+                    </div>
+                </div>
+
+                <div class="card-preview">
+                    <div class="card-chip"></div>
+                    <div class="card-number-display" id="cardDisplay">#### #### #### ####</div>
+                    <div class="card-details">
+                        <div>
+                            <small>CARD HOLDER</small>
+                            <div id="nameDisplay">YOUR NAME</div>
+                        </div>
+                        <div>
+                            <small>EXPIRES</small>
+                            <div id="expDisplay">MM/YY</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-form">
+                    <div class="form-group">
+                        <label>Card Number *</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNumber(this); updateCardPreview()">
+                    </div>
+                    <div class="form-group">
+                        <label>Card Holder Name *</label>
+                        <input type="text" id="cardName" placeholder="JOHN DOE" oninput="updateCardPreview()">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Expiry Date *</label>
+                            <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this); updateCardPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>CVV *</label>
+                            <input type="password" id="cvv" placeholder="123" maxlength="3">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-pay-now" id="payButton" onclick="processPayment()">
+                    Pay Now
+                </button>
+                
+                <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">
+                    🔒 Your payment is secured by 256-bit encryption<br>
+                    Contact: <a href="mailto:matshikathokozani4@gmail.com">matshikathokozani4@gmail.com</a> for support
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Processing Overlay -->
+    <div class="processing-overlay" id="processingOverlay">
+        <div class="spinner"></div>
+        <h2>Processing Payment...</h2>
+        <p>Please do not close this window</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
+            Secured by Matshika Thokozani Payment Systems
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="developer-info">
+            <h3>👨‍💻 Developed by Matshika Thokozani</h3>
+            <p>Full-Stack Developer & Digital Solutions Architect</p>
+            <p>📧 <a href="mailto:matshikathokozani4@gmail.com">matshikathokozani4@gmail.com</a></p>
+            <p>🌐 <a href="https://www.ufs.ac.za" target="_blank">University of the Free State</a></p>
+            <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
+                © 2026 KovsieShare Pro. All rights reserved.<br>
+                Designed to empower UFS students through technology.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Toast -->
+    <div id="toastContainer"></div>
+
+    <script>
+        // Database Simulation - persists in memory
+        let usersDB = JSON.parse(localStorage.getItem('kovsieUsers')) || [
+            { email: 'demo@ufs.ac.za', password: 'demo123', name: 'Demo Student', package: 'free', isPremium: false, uploads: 0, downloads: 0, quizzes: 0, credits: 0 }
+        ];
+        
+        let currentUser = JSON.parse(localStorage.getItem('kovsieCurrentUser')) || null;
+        let currentPackage = currentUser ? currentUser.package : 'free';
+        let selectedPackageData = null;
+
+        // Package Data
+        const packages = {
+            free: { name: 'Free', price: 0, downloads: 3 },
+            basic: { name: 'Basic', price: 29, downloads: 10 },
+            premium: { name: 'Premium', price: 49, downloads: 'Unlimited' },
+            ultimate: { name: 'Ultimate', price: 99, downloads: 'Unlimited+' }
+        };
+
+        // Save database to localStorage
+        function saveDB() {
+            localStorage.setItem('kovsieUsers', JSON.stringify(usersDB));
+        }
+
+        // Save current user session
+        function saveSession() {
+            localStorage.setItem('kovsieCurrentUser', JSON.stringify(currentUser));
+        }
+
+        // Check if user is already logged in on page load
+        window.onload = function() {
+            if (currentUser) {
+                currentPackage = currentUser.package;
+                enterApp();
+            } else {
+                showLogin();
+            }
+        };
+
+        // Auth Functions
+        function showLogin() {
+            document.getElementById('loginBox').style.display = 'block';
+            document.getElementById('registerBox').style.display = 'none';
+            clearErrors();
+            
+            // Pre-fill email if remembered
+            const rememberedEmail = localStorage.getItem('kovsieRememberEmail');
+            if (rememberedEmail) {
+                document.getElementById('loginEmail').value = rememberedEmail;
+            }
+        }
+
+        function showRegister() {
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('registerBox').style.display = 'block';
+            clearErrors();
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(e => e.classList.remove('visible'));
+            document.querySelectorAll('input').forEach(e => e.classList.remove('error'));
+        }
+
+        function showError(fieldId, errorId) {
+            document.getElementById(fieldId).classList.add('error');
+            document.getElementById(errorId).classList.add('visible');
+        }
+
+        function validateEmail(email) {
+            return email.endsWith('@ufs.ac.za') || email.endsWith('@ufs4life.ac.za');
+        }
+
+        function login() {
+            clearErrors();
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email) {
+                showError('loginEmail', 'loginEmailError');
+                return;
+            }
+            if (!validateEmail(email)) {
+                document.getElementById('loginEmailError').textContent = 'Must be @ufs.ac.za or @ufs4life.ac.za';
+                showError('loginEmail', 'loginEmailError');
+                return;
+            }
+            if (!password) {
+                showError('loginPassword', 'loginPasswordError');
+                return;
+            }
+
+            // Find user in database
+            const user = usersDB.find(u => u.email === email && u.password === password);
+            if (!user) {
+                const emailExists = usersDB.find(u => u.email === email);
+                if (emailExists) {
+                    document.getElementById('loginPasswordError').textContent = 'Incorrect password';
+                    showError('loginPassword', 'loginPasswordError');
+                } else {
+                    document.getElementById('loginEmailError').textContent = 'Account not found. Please sign up.';
+                    showError('loginEmail', 'loginEmailError');
+                }
+                return;
+            }
+
+            // Successful login
+            currentUser = user;
+            currentPackage = user.package;
+            
+            // Remember email for next time
+            localStorage.setItem('kovsieRememberEmail', email);
+            
+            saveSession();
+            enterApp();
+            showToast(`Welcome back, ${user.name}!`, 'success');
+        }
+
+        function register() {
+            clearErrors();
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim().toLowerCase();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+            if (!name) {
+                showError('regName', 'regNameError');
+                return;
+            }
+            if (!email || !validateEmail(email)) {
+                showError('regEmail', 'regEmailError');
+                return;
+            }
+            if (!password || password.length < 6) {
+                showError('regPassword', 'regPasswordError');
+                return;
+            }
+            if (password !== confirmPassword) {
+                showError('regConfirmPassword', 'regConfirmError');
+                return;
+            }
+
+            // Check if email exists
+            if (usersDB.find(u => u.email === email)) {
+                document.getElementById('regEmailError').textContent = 'Email already registered. Please sign in.';
+                showError('regEmail', 'regEmailError');
+                return;
+            }
+
+            // Create new user - NO FREE CREDITS
+            const newUser = {
+                email,
+                password,
+                name,
+                package: 'free',
+                isPremium: false,
+                uploads: 0,
+                downloads: 0,
+                quizzes: 0,
+                credits: 0  // Starting with 0 credits - must earn through activity
+            };
+            
+            usersDB.push(newUser);
+            saveDB();
+            
+            currentUser = newUser;
+            currentPackage = 'free';
+            
+            // Remember email
+            localStorage.setItem('kovsieRememberEmail', email);
+            
+            saveSession();
+            enterApp();
+            showToast('Account created! Start earning credits by uploading materials.', 'success');
+        }
+
+        function enterApp() {
+            document.getElementById('authSection').classList.remove('active');
+            document.getElementById('dashboard').classList.add('active');
+            document.getElementById('navLinks').style.display = 'flex';
+            updatePackageUI();
+            loadMaterials();
+        }
+
+        function logout() {
+            currentUser = null;
+            currentPackage = 'free';
+            localStorage.removeItem('kovsieCurrentUser');
+            document.getElementById('authSection').classList.add('active');
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('navLinks').style.display = 'none';
+            showLogin();
+            showToast('Logged out successfully', 'info');
+        }
+
+        // Package Functions
+        function updatePackageUI() {
+            document.querySelectorAll('.package-card').forEach(card => {
+                card.classList.remove('current');
+                card.querySelector('.btn-select-package').textContent = 'Select Plan';
+                card.querySelector('.btn-select-package').classList.remove('btn-current');
+            });
+
+            const currentCard = document.getElementById(currentPackage + 'Package');
+            if (currentCard) {
+                currentCard.classList.add('current');
+                const btn = currentCard.querySelector('.btn-select-package');
+                btn.textContent = 'Current Plan';
+                btn.classList.add('btn-current');
+            }
+
+            if (currentPackage !== 'free') {
+                document.getElementById('premiumBadge').classList.add('active');
+            } else {
+                document.getElementById('premiumBadge').classList.remove('active');
+            }
+
+            if (currentUser) {
+                document.getElementById('statUploads').textContent = currentUser.uploads || 0;
+                document.getElementById('statDownloads').textContent = currentUser.downloads || 0;
+                document.getElementById('statQuizzes').textContent = currentUser.quizzes || 0;
+                document.getElementById('statCredits').textContent = currentUser.credits || 0;
+                document.getElementById('creditCount').textContent = (currentUser.credits || 0) + ' Credits';
+            }
+        }
+
+        function selectFree() {
+            if (currentPackage === 'free') return;
+            
+            if (confirm('Downgrade to Free? You will lose premium features.')) {
+                currentPackage = 'free';
+                currentUser.package = 'free';
+                currentUser.isPremium = false;
+                saveSession();
+                saveDB();
+                updatePackageUI();
+                showToast('Downgraded to Free plan', 'info');
+            }
+        }
+
+        function selectPackage(type) {
+            if (currentPackage === type) return;
+            
+            selectedPackageData = packages[type];
+            document.getElementById('selectedPackageName').textContent = selectedPackageData.name + ' Package';
+            document.getElementById('selectedPackagePrice').textContent = selectedPackageData.price + '.00';
+            document.getElementById('payButton').textContent = 'Pay R' + selectedPackageData.price + '.00 Now';
+            document.getElementById('paymentModal').classList.add('active');
+        }
+
+        // Payment Functions
+        function selectPaymentMethod(method) {
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\s/g, '').replace(/[^0-9]/g, '');
+            let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+            input.value = formatted;
+        }
+
+        function formatExpiry(input) {
+            let value = input.value.replace(/[^0-9]/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            input.value = value;
+        }
+
+        function updateCardPreview() {
+            const number = document.getElementById('cardNumber').value || '#### #### #### ####';
+            const name = document.getElementById('cardName').value || 'YOUR NAME';
+            const exp = document.getElementById('expiryDate').value || 'MM/YY';
+            
+            document.getElementById('cardDisplay').textContent = number;
+            document.getElementById('nameDisplay').textContent = name.toUpperCase();
+            document.getElementById('expDisplay').textContent = exp;
+        }
+
+        function processPayment() {
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const cardName = document.getElementById('cardName').value;
+            const expiry = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+
+            if (cardNumber.length !== 16) {
+                showToast('Please enter a valid 16-digit card number', 'error');
+                return;
+            }
+            if (!cardName) {
+                showToast('Please enter card holder name', 'error');
+                return;
+            }
+            if (expiry.length !== 5) {
+                showToast('Please enter valid expiry date (MM/YY)', 'error');
+                return;
+            }
+            if (cvv.length !== 3) {
+                showToast('Please enter valid CVV (3 digits)', 'error');
+                return;
+            }
+
+            document.getElementById('paymentModal').classList.remove('active');
+            document.getElementById('processingOverlay').classList.add('active');
+
+            setTimeout(() => {
+                document.getElementById('processingOverlay').classList.remove('active');
+                
+                const packageType = Object.keys(packages).find(key => packages[key].name === selectedPackageData.name);
+                currentPackage = packageType;
+                currentUser.package = packageType;
+                currentUser.isPremium = packageType !== 'free';
+                
+                // Add credits equal to package price (not free anymore)
+                currentUser.credits += selectedPackageData.price;
+                
+                saveSession();
+                saveDB();
+                updatePackageUI();
+                showToast(`🎉 Payment successful! Welcome to ${selectedPackageData.name}! +${selectedPackageData.price} credits`, 'success');
+                
+                document.getElementById('cardNumber').value = '';
+                document.getElementById('cardName').value = '';
+                document.getElementById('expiryDate').value = '';
+                document.getElementById('cvv').value = '';
+                updateCardPreview();
+            }, 3000);
+        }
+
+        // Navigation
+        function showSection(section) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            
+            switch(section) {
+                case 'home':
+                case 'packages':
+                    document.getElementById('packagesSection').classList.add('active');
+                    break;
+                case 'browse':
+                    document.getElementById('browseSection').classList.add('active');
+                    loadMaterials();
+                    break;
+                case 'upload':
+                    document.getElementById('uploadSection').classList.add('active');
+                    break;
+                case 'quizzes':
+                    if (currentPackage === 'free') {
+                        showToast('Upgrade to access quizzes!', 'error');
+                        document.getElementById('packagesSection').classList.add('active');
+                        return;
+                    }
+                    document.getElementById('quizzesSection').classList.add('active');
+                    break;
+            }
+        }
+
+        // Content Functions
+        function loadMaterials() {
+            const materials = [
+                { title: 'COS1511 Exam Paper 2025', type: 'PDF', size: '2.4 MB', downloads: 156 },
+                { title: 'MAT1503 Calculus Notes', type: 'PDF', size: '5.1 MB', downloads: 234 },
+                { title: 'ILW1501 Assignment Solutions', type: 'DOCX', size: '1.2 MB', downloads: 89 },
+                { title: 'ACC1501 Financial Summary', type: 'PDF', size: '3.8 MB', downloads: 312 }
+            ];
+
+            const list = document.getElementById('materialsList');
+            const limit = currentPackage === 'free' ? 2 : materials.length;
+            
+            list.innerHTML = materials.slice(0, limit).map(m => `
+                <div style="padding: 1rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h4 style="color: var(--ufs-maroon); margin-bottom: 0.3rem;">
+                            <a href="#" onclick="downloadMaterial()">${m.title}</a>
+                        </h4>
+                        <small style="color: #666;">${m.type} • ${m.size} • ${m.downloads} downloads</small>
+                    </div>
+                    <button onclick="downloadMaterial()" style="padding: 0.5rem 1rem; background: var(--ufs-maroon); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        ⬇️ Download
+                    </button>
+                </div>
+            `).join('');
+
+            if (currentPackage === 'free') {
+                list.innerHTML += `
+                    <div style="padding: 2rem; text-align: center; background: #f8f9fa; border-radius: 10px; margin-top: 1rem;">
+                        <p>🔒 <strong>2 more materials available</strong></p>
+                        <p>Upgrade to Basic, Premium, or Ultimate to access all materials</p>
+                        <button onclick="showSection('packages')" style="margin-top: 1rem; padding: 0.8rem 2rem; background: var(--ufs-gold); color: var(--ufs-maroon); border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                            View Packages
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function downloadMaterial() {
+            if (!currentUser) return;
+            
+            const limit = packages[currentPackage].downloads;
+            if (limit !== 'Unlimited' && limit !== 'Unlimited+' && currentUser.downloads >= limit) {
+                showToast(`Daily download limit reached (${limit}). Upgrade your package!`, 'error');
+                showSection('packages');
+                return;
+            }
+
+            currentUser.downloads++;
+            currentUser.credits += 5; // Earn 5 credits per download
+            saveSession();
+            saveDB();
+            updatePackageUI();
+            showToast('Download started! +5 credits', 'success');
+        }
+
+        function handleUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            currentUser.uploads++;
+            currentUser.credits += 10; // Earn 10 credits per upload
+            saveSession();
+            saveDB();
+            updatePackageUI();
+            
+            document.getElementById('uploadStatus').innerHTML = `
+                <div style="margin-top: 1rem; padding: 1rem; background: #e8f5e9; border-radius: 10px; color: #2e7d32;">
+                    ✅ <strong>${file.name}</strong> uploaded successfully! You earned 10 credits.
+                </div>
+            `;
+            
+            showToast('File uploaded! +10 credits', 'success');
+        }
+
+        function checkAnswer(element, isCorrect) {
+            if (currentPackage === 'free') {
+                showToast('Upgrade to Premium to access quizzes!', 'error');
+                return;
+            }
+
+            element.classList.add(isCorrect ? 'correct' : 'wrong');
+            if (isCorrect) {
+                currentUser.quizzes++;
+                currentUser.credits += 5; // Earn 5 credits per correct answer
+                saveSession();
+                saveDB();
+                updatePackageUI();
+                showToast('Correct! +5 credits', 'success');
+            }
+        }
+
+        // Utilities
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Close modal on outside click
+        document.getElementById('paymentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
